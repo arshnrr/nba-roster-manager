@@ -140,6 +140,11 @@ app.get('/trade-room', async (req, res) => {
 app.post('/execute-trade', async (req, res) => {
     const teamA = req.body.t1;
     const teamB = req.body.t2;
+
+    if (teamA === teamB) {
+        return res.status(400).send("Invalid Trade: You cannot trade players within the same team.");
+    }
+
     const playersFromA = [].concat(req.body.trade1 || []);
     const playersFromB = [].concat(req.body.trade2 || []);
 
