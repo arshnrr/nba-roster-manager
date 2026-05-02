@@ -54,6 +54,8 @@ This is important cause trades and other updates are compound operations so mult
 
 For **isolation** the application uses the default PostgreSQL of **read committed**. This works for the purposes of the project, since it is single user. Because of this, you don't do dirty reads and see the trade midway through the transaction.
 
+To make this multi-user I could have made a users table and made it so each person could be the GM of a different team. I could have also have more robust concurrency control and add conflict handling. 
+
 ---
 
 ## AI USAGE
