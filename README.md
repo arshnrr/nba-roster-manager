@@ -11,6 +11,8 @@ Trade History: Every move you make is saved in a history log that shows exactly 
 
 It’s Live: Unlike a local project, this is hosted in the cloud. Because it uses a real PostgreSQL database, all your trades and player updates stay saved even if the server restarts or you close your browser.
 
+Hosted link: https://nba-roster-manager.onrender.com/
+
 ## 🛠️ Technical Stack
 * **Backend:** Node.js, Express.js
 * **Database:** PostgreSQL (Managed via Render)
