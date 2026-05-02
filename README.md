@@ -1,5 +1,16 @@
 # NBA Roster Manager - Project Documentation
 
+This project is a web-based NBA Roster Manager that lets you act as a league commissioner. You can browse through all 30 teams, manage their rosters, and handle player movements in real-time.
+
+What you can do:
+Manage Rosters: View every player in the league, add new ones, update their stats, or waive them from a team.
+
+The Trade Room: Pick any two teams to trade players. It calculates the total value (PPG and BPM) for both sides so you can see if a trade is "fair" before hitting execute.
+
+Trade History: Every move you make is saved in a history log that shows exactly who was traded, when it happened, and which teams were involved.
+
+It’s Live: Unlike a local project, this is hosted in the cloud. Because it uses a real PostgreSQL database, all your trades and player updates stay saved even if the server restarts or you close your browser.
+
 ## 🛠️ Technical Stack
 * **Backend:** Node.js, Express.js
 * **Database:** PostgreSQL (Managed via Render)
@@ -52,7 +63,7 @@ I used the AI to help implement the **Parameterized Queries** from the PostgreSQ
 
 I also used it as a **debugger**. For example, I had an issue with my new feature of trade history not loading correctly. It helped me identify a mismatch of schema between index.js and the new ejs file. Another issue was for trades, there were scenarios where you could create a trade between two of the same team, and it pointed out a few methods to avoid that. I ended up deciding to return an error if that was the case. 
 
-Another method AI was used for was to find out why **sqllite** exactly was not really working out for what I wanted. There was really no persistence. I ended up finding out that with sqllite, hosting on the cloud and its serverless nature meant that every time the server restarted the files would be wiped. I needed more reliable persistence. 
+Another method AI was used for was to find out why **sqllite** exactly was not really working out for what I wanted. There was really no persistence. I ended up finding out that with sqllite, hosting on the cloud and its serverless nature meant that every time the server restarted the files would be wiped. I needed more reliable persistence, so it helped me narrow down to PostgreSQL as that choice.
 
 Finally I used AI to check the **robustness** of my project. I asked it if my current features would be prone to any issues. Also, I used AI to help format this README to not just be a blob of text, as markdown formatting was really bothering me!
 
