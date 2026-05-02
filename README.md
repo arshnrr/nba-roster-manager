@@ -13,6 +13,8 @@ It’s Live: Unlike a local project, this is hosted in the cloud. Because it use
 
 Hosted link: https://nba-roster-manager.onrender.com/
 
+*note: The application is hosted on Render’s Free Tier, which utilizes a 15-minute inactivity spin-down. This can cause a 30-60 cold start delay on an initial request, which will probably be the case when you visit. Data integrity should still be maintained, since the database is separate from the web service.
+
 ## 🛠️ Technical Stack
 * **Backend:** Node.js, Express.js
 * **Database:** PostgreSQL (Managed via Render)
