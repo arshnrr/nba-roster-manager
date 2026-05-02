@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 10px; }
+        .nav { margin-bottom: 20px; }
+        .timestamp { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Administrative Trade Ledger</h1>
+    <div class="nav">
+        <a href="/">Dashboard</a> | 
+        <a href="/trade-room">Trade Room</a> | 
+        <a href="/history">Trade History</a>
+    </div>
+    <hr>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date/Time</th>
+                <th>Player</th>
+                <th>Outgoing Team</th>
+                <th>Incoming Team</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (history.length === 0) { %>
+                <tr><td colspan="4">No trades have been recorded yet.</td></tr>
+            <% } %>
+            <% history.forEach(function(log) { %>
+                <tr>
+                    <td class="timestamp"><%= new Date(log.trade_date).toLocaleString() %></td>
+                    <td><strong><%= log.player_name %></strong></td>
+                    <td><%= log.from_team %></td>
+                    <td><%= log.to_team %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+        .nav { margin-bottom: 10px; }
+        .section { margin-top: 20px; padding: 10px; border-top: 1px solid #ccc; background: #fcfcfc; }
+        input[type="number"] { width: 50px; }
+    </style>
+</head>
+<body>
+    <h1>NBA Roster Manager</h1>
+    <div class="nav"><a href="/">Dashboard</a> | <a href="/trade-room">Trade Room</a> | <a href="/history">Trade History</a></div>
+    <hr>
+    
+    <form action="/" method="GET">
+        Team: <select name="team_id" onchange="this.form.submit()">
+            <option value="">-- Select --</option>
+            <% teams.forEach(function(t) { %>
+                <option value="<%= t.team_id %>" <%= t.team_id == selectedTeamId ? 'selected' : '' %>><%= t.team_name %></option>
+            <% }); %>
+        </select>
+        <% if (selectedTeamId) { %>
+            Pos: <select name="position">
+                <option value="">All</option>
+                <% ['PG','SG','SF','PF','C'].forEach(function(p) { %>
+                    <option value="<%= p %>" <%= position == p ? 'selected' : '' %>><%= p %></option>
+                <% }); %>
+            </select>
+            Min PPG: <input name="minPPG" type="number" step="0.1" value="<%= minPPG %>">
+            <button type="submit">Filter</button>
+        <% } %>
+    </form>
+
+    <% if (selectedTeamId) { %>
+        <table>
+            <tr><th>Name</th><th>Pos</th><th>PPG</th><th>RPG</th><th>APG</th><th>BPM</th><th>Action</th></tr>
+            <% players.forEach(function(p) { %>
+                <tr>
+                    <td><%= p.player_name %></td>
+                    <td><%= p.position %></td>
+                    <td><%= p.ppg %></td>
+                    <td><%= p.rpg %></td>
+                    <td><%= p.apg %></td>
+                    <td><%= p.bpm %></td>
+                    <td>
+                        <form action="/delete-player" method="POST">
+                            <input type="hidden" name="id" value="<%= p.player_id %>">
+                            <input type="hidden" name="team_id" value="<%= selectedTeamId %>">
+                            <button type="submit">Waive</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </table>
+
+        <div class="section">
+            <h3>Edit Player Stats</h3>
+            <form action="/update-stats" method="POST">
+                <input type="hidden" name="team_id" value="<%= selectedTeamId %>">
+                Player: <select name="player_id" required>
+                    <option value="">-- Choose Player --</option>
+                    <% players.forEach(function(p) { %>
+                        <option value="<%= p.player_id %>"><%= p.player_name %></option>
+                    <% }); %>
+                </select>
+                PPG: <input name="ppg" step="0.1" type="number">
+                RPG: <input name="rpg" step="0.1" type="number">
+                APG: <input name="apg" step="0.1" type="number">
+                BPM: <input name="bpm" step="0.1" type="number">
+                <button type="submit">Save Stats</button>
+            </form>
+        </div>
+    <% } %>
+
+    <div class="section">
+        <h3>Add New Player</h3>
+        <form action="/add-player" method="POST">
+            Name: <input name="name" required style="width:100px;">
+            Pos: <input name="pos" style="width:40px;">
+            PPG: <input name="ppg" type="number" step="0.1">
+            RPG: <input name="rpg" type="number" step="0.1">
+            APG: <input name="apg" type="number" step="0.1">
+            BPM: <input name="bpm" type="number" step="0.1">
+            <input type="hidden" name="ts" value="0.000">
+            Team: 
+            <select name="team_id">
+                <% teams.forEach(function(t) { %>
+                    <option value="<%= t.team_id %>" <%= t.team_id == selectedTeamId ? 'selected' : '' %>><%= t.team_name %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Add Player</button>
+        </form>
+    </div>
+</body>
+</html>

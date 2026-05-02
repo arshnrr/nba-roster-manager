@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+        .nav { margin-bottom: 10px; }
+        .report { background: #fafafa; padding: 10px; border: 1px solid #000; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>NBA Trade Room</h1>
+    <div class="nav"><a href="/">Dashboard</a> | <a href="/trade-room">Trade Room</a> | <a href="/history">Trade History</a></div>
+    <hr>
+
+    <form action="/trade-room" method="GET">
+        Team A: 
+        <select name="t1" onchange="this.form.submit()">
+            <option value="">-- Select --</option>
+            <% allTeams.forEach(function(t) { %>
+                <option value="<%= t.team_id %>" <%= t.team_id == t1 ? 'selected' : '' %>><%= t.team_name %></option>
+            <% }); %>
+        </select>
+
+        Team B: 
+        <select name="t2" onchange="this.form.submit()">
+            <option value="">-- Select --</option>
+            <% allTeams.forEach(function(t) { %>
+                <option value="<%= t.team_id %>" <%= t.team_id == t2 ? 'selected' : '' %>><%= t.team_name %></option>
+            <% }); %>
+        </select>
+
+        <% if (t1 && t2) { %>
+            <div class="report">
+                <h3>Trade Evaluation Report</h3>
+                <p><strong>A Receives:</strong> <% staged2.forEach(p => { %> <%= p.player_name %>; <% }); %></p>
+                <p><strong>B Receives:</strong> <% staged1.forEach(p => { %> <%= p.player_name %>; <% }); %></p>
+                <p>Totals (A Receives): <%= totals2.ppg %> PPG | <%= totals2.bpm %> BPM</p>
+                <p>Totals (B Receives): <%= totals1.ppg %> PPG | <%= totals1.bpm %> BPM</p>
+                <p><strong>Verdict:</strong> <%= winner %></p>
+                
+                <button type="submit">Check</button>
+                <button type="submit" formaction="/execute-trade" formmethod="POST">Execute Trade</button>
+                <a href="/trade-room?t1=<%= t1 %>&t2=<%= t2 %>">Reset</a>
+            </div>
+
+            <hr>
+
+            <table style="width: 100%;">
+                <tr>
+                    <th style="width: 50%;">Team A Roster</th>
+                    <th style="width: 50%;">Team B Roster</th>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <% r1.forEach(function(p) { %>
+                            <div>
+                                <input type="checkbox" name="trade1" value="<%= p.player_id %>" 
+                                    <%= trade1.includes(p.player_id.toString()) ? 'checked' : '' %>>
+                                <%= p.player_name %> (<%= p.ppg %> PPG)
+                            </div>
+                        <% }); %>
+                    </td>
+                    <td valign="top">
+                        <% r2.forEach(function(p) { %>
+                            <div>
+                                <input type="checkbox" name="trade2" value="<%= p.player_id %>" 
+                                    <%= trade2.includes(p.player_id.toString()) ? 'checked' : '' %>>
+                                <%= p.player_name %> (<%= p.ppg %> PPG)
+                            </div>
+                        <% }); %>
+                    </td>
+                </tr>
+            </table>
+        <% } %>
+    </form>
+</body>
+</html>
